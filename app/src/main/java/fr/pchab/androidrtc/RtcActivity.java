@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
@@ -71,10 +72,12 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
         VideoRendererGui.setView(vsv, new Runnable() {
             @Override
             public void run() {
+                Log.d("TANHQ", "onCreate()...init");
                 init();
             }
         });
 
+        Log.d("TANHQ", "onCreate()... address: " + mSocketAddress);
         // local and remote render
         remoteRender = VideoRendererGui.create(
                 REMOTE_X, REMOTE_Y,
@@ -112,9 +115,12 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);
         PeerConnectionParameters params = new PeerConnectionParameters(
-                true, false, displaySize.x, displaySize.y, 30, 1, VIDEO_CODEC_VP9, true, 1, AUDIO_CODEC_OPUS, true);
+                true, false, displaySize.x, displaySize.y,
+                15, 1, VIDEO_CODEC_VP9, true,
+                1, AUDIO_CODEC_OPUS, true);
 
         client = new WebRtcClient(this, mSocketAddress, params, VideoRendererGui.getEGLContext());
+        Log.d("TANHQ", "init()-> client = " + client);
     }
 
     @Override
@@ -129,6 +135,7 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("TANHQ", "onResume()...");
         vsv.onResume();
         if (client != null) {
             client.onResume();
@@ -137,6 +144,7 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
 
     @Override
     public void onDestroy() {
+        Log.d("TANHQ", "onDestroy()...");
         if (client != null) {
             client.onDestroy();
         }
@@ -145,6 +153,7 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
 
     @Override
     public void onCallReady(String callId) {
+        Log.d("TANHQ", "onCallReady() callId = " + callId);
         if (callerId != null) {
             try {
                 answer(callerId);
@@ -176,6 +185,7 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
     }
 
     public void startCam() {
+        Log.d("TANHQ", "startCam() ");
         // Camera settings
         if (PermissionChecker.hasPermissions(this, RequiredPermissions)) {
             client.start("android_test");

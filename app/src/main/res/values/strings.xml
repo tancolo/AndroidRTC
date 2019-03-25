@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">AndroidRTC</string>
     <!--<string name="host">ns37269.ip-91-121-3.eu</string>-->
-    <string name="host">localhost</string>
+    <string name="host">127.0.0.1</string>
     <string name="port">3000</string>
     <string name="action_settings">Options</string>
 </resources>
